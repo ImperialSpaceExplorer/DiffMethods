@@ -12,6 +12,7 @@ namespace MethodsKoshi
         private List<double> hstep;
         private List<int> Nctr;
         private List<double> maxerr;
+        
         //Поменять путь Файла
         private string filePath = "C:\\Users\\wizze\\source\\repos\\Basalin _Lab\\";
 
