@@ -8,15 +8,6 @@ namespace MethodsKoshi
 {
    class Method_2_RungeKutta : Method 
    {
-        //Добавление функции для сбора данных
-        private void ADDING_DATA_FOR_SAVE(double h, int Nctr, double err)
-        {
-            Hstep.Add(h);
-            NctR.Add(Nctr);
-            Maxerr.Add(err);
-        }
-        
-     
         double[] hstep = { 0.01, 0.001, 0.0001, 0.00001 };
 
         public Method_2_RungeKutta(List<string> exp) : base(exp) { }
