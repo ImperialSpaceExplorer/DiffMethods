@@ -23,6 +23,14 @@ namespace MethodsKoshi
         {
             return Maxerr;
         }
+
+                //Добавление функции для сбора данных
+        protected void ADDING_DATA_FOR_SAVE(double h, int Nctr, double err)
+        {
+            Hstep.Add(h);
+            NctR.Add(Nctr);
+            Maxerr.Add(err);
+        }
         
         protected List<double> Hstep = new List<double>();
         protected List<int> NctR = new List<int>();
