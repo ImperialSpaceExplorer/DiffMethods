@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Basalin__Lab
+namespace MethodsKoshi
 {
     class Method_1_Euler : Method
     {
