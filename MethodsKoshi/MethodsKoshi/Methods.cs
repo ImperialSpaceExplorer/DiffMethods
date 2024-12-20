@@ -8,6 +8,27 @@ namespace MethodsKoshi
 {
     abstract class Method : IMethod
     {
+        //добавляю в начале класса, чтобы тебе быстрее было что исправить у себя
+        public List<double> Get_H()
+        {
+            return Hstep;
+        }
+        
+        public List<int> Get_N()
+        {
+            return NctR;
+        }
+        
+        public List<double> Get_Err()
+        {
+            return Maxerr;
+        }
+        
+        protected List<double> Hstep = new List<double>();
+        protected List<int> NctR = new List<int>();
+        protected List<double> Maxerr = new List<double>();
+        //**********************************************************************************
+
 
         protected List<List<string>> expression;
 
