@@ -73,7 +73,7 @@ namespace MethodsKoshi
 
         public override void ToWriteConsole(double h, int Nctr, double err) //пока не вынес в абстрактный класс поскольку не знаю какой вывод понадобится для 3 метода
         {
-            Console.WriteLine("h={0}   N={1}    err={2:f6}", h, Nctr, err);
+            Console.WriteLine("h={0}   \tN={1}    \terr={2:f6}", h, Nctr, err);
         }
     }
 }
