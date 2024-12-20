@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Basalin__Lab
+namespace MethodsKoshi
 {
     public class Class_Saves : ISaving
     {
