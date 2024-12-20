@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace MethodsKoshi
 {
@@ -13,7 +13,11 @@ namespace MethodsKoshi
             //m1.ToCalculate();
 
             Method_2_RungeKutta m2 = new Method_2_RungeKutta(new System.Collections.Generic.List<string>() { exp1, exp2 });
-            m2.ToCalculate();
+            //m2.ToCalculate();
+
+            double z = 0.1;
+            Method_3_EndDiff m3 = new Method_3_EndDiff(new System.Collections.Generic.List<string>() { exp1, exp2 }, z);
+            m3.ToCalculate();
         }
     }
 }
