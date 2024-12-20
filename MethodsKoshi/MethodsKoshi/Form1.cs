@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Basalin__Lab
+namespace MethodsKoshi
 {
     public partial class Form1 : Form
     {
