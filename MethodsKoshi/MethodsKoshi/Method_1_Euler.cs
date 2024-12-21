@@ -51,13 +51,6 @@ namespace MethodsKoshi
             return Ynew;
         }
 
-        List<double> Ethalon( double Xi) {  //можно вынести на пользовательский ввод
-            List<double> res = new List<double>();
-            res.Add(1 + 4 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
-            res.Add( -2 - 6 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
-            return res;
-        }
-
         public override void ToWriteConsole(double h, int Nctr, double err)
         {
             Console.WriteLine("h={0}   \tN={1}    \terr={2:f6}", h, Nctr, err);
