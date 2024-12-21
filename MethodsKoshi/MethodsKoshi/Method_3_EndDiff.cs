@@ -78,6 +78,7 @@ namespace MethodsKoshi
 
                             err = 0;
                             for (int l = 0; l < Ynodes[Ynodes.Count - 1].Count; l++) { err += Math.Pow(Ynodes[Ynodes.Count - 1][l] - Ethalon(Xnodes[Xnodes.Count - 1])[l], 2); }
+                            err = Math.Sqrt(err);
                             if (err > maxerr) maxerr = err;
                         }
 
@@ -283,14 +284,6 @@ namespace MethodsKoshi
                 }
             }
             return curr;
-        }
-
-        List<double> Ethalon(double Xi)    //можно вынести на пользовательский ввод
-        {
-            List<double> res = new List<double>();
-            res.Add(1 + 4 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
-            res.Add(-2 - 6 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
-            return res;
         }
 
         public override void ToWriteConsole(double h, int Nctr, double err) //пока не вынес в абстрактный класс поскольку не знаю какой вывод понадобится для 3 метода
