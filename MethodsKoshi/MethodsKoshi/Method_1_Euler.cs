@@ -32,6 +32,7 @@ namespace MethodsKoshi
 
                     err = 0;
                     for (int i = 0; i < Y.Count; i++) { err += Math.Pow(Y[i] - Ethalon( Xi)[i], 2); }
+                    err = Math.Sqrt(err);
                     if (err > maxerr) maxerr = err;
 
                     Nctr++;
