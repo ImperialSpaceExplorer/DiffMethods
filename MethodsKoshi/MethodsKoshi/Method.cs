@@ -159,6 +159,21 @@ namespace MethodsKoshi
             return inds;
         }
 
+        protected List<double> Ethalon(double Xi)    
+        {
+            List<double> res = new List<double>();
+            //res.Add(1 + 4 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
+
+            //res.Add(1 - 1.48879 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) + 1));
+            res.Add(1 + 4.504340245 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
+
+            //res.Add(-2 - 6 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
+
+            //res.Add(-2 + 2.23319 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) + 1));
+            res.Add(-2 - 6.756505364 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
+            return res;
+        }
+
         public abstract void ToWriteConsole(double h, int Nctr, double err);
     }    
 }
