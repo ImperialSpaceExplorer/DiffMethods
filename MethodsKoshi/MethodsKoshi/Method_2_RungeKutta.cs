@@ -31,6 +31,7 @@ namespace MethodsKoshi
 
                     err = 0;
                     for (int i = 0; i < Y.Count; i++) { err += Math.Pow(Y[i] - Ethalon( Xi)[i], 2); }
+                    err = Math.Sqrt(err);
                     if (err > maxerr) maxerr = err;
 
                     Nctr++;
@@ -46,13 +47,13 @@ namespace MethodsKoshi
             List<double> k1 = ToInterpreteExp(Xi, Yi, expression);
 
             List<double> buf = new List<double>();
-            for(int j=0;j<Yi.Count;j++) { buf.Add(Yi[j] + k1[j] / 2); }
+            for(int j=0;j<Yi.Count;j++) { buf.Add(Yi[j] + step*k1[j] / 2); }
             List<double> k2 = ToInterpreteExp(Xi+step/2,buf, expression);
 
-            buf.Clear(); for (int j = 0; j < Yi.Count; j++) { buf.Add(Yi[j] + k2[j] / 2); }
+            buf.Clear(); for (int j = 0; j < Yi.Count; j++) { buf.Add(Yi[j] + step*k2[j] / 2); }
             List<double> k3 = ToInterpreteExp(Xi + step / 2, buf, expression);
 
-            buf.Clear(); for (int j = 0; j < Yi.Count; j++) { buf.Add(Yi[j] + k3[j]); }
+            buf.Clear(); for (int j = 0; j < Yi.Count; j++) { buf.Add(Yi[j] + step*k3[j]); }
             List<double> k4 = ToInterpreteExp(Xi + step, buf, expression);
 
             List<double> Ynew = new List<double>();//
@@ -61,14 +62,6 @@ namespace MethodsKoshi
                 Ynew.Add(Yi[i] + step/6 * (k1[i] + 2*k2[i] + 2*k3[i] + k4[i]));
             }
             return Ynew;
-        }
-
-        List<double> Ethalon( double Xi)    //можно вынести на пользовательский ввод
-        {
-            List<double> res = new List<double>();
-            res.Add(1 + 4 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
-            res.Add(-2 - 6 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
-            return res;
         }
 
         public override void ToWriteConsole(double h, int Nctr, double err) //пока не вынес в абстрактный класс поскольку не знаю какой вывод понадобится для 3 метода
