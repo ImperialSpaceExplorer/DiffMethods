@@ -111,13 +111,16 @@ namespace Basalin__Lab
         }
 
         TextBox textBox = new TextBox();
+        TextBox textBox0 = new TextBox();
+        TextBox textBox1 = new TextBox();
+        TextBox textBox2 = new TextBox();
 
         readonly string[] Names_operations =
             {
             "Метод Эйлера",
             "Метод Рунге-Кутты",
             "Метод Гаусса",
-            "Метод Ньютона",                            //\n(или Метод, основанный на использовании \nконечно-разностной формулы?)
+            "Метод Ньютона",
             "Сохранить использованный \nметод в txt"
             };
 
@@ -131,10 +134,36 @@ namespace Basalin__Lab
             textBox.Font = new Font("TimeNewRoman", 12);
             textBox.Text = "Методы решений для задачи Коши";
             textBox.Width = (textBox.Text.Length - 2) * 10;
-
-            //textBox.Location = new Point(panel1.Width + (this.Width - panel1.Width) / 3, panel1.Location.Y);
-            textBox.Location = new Point(panel1.Width + 50/*(this.Width - panel1.Width) / 3*/, panel1.Location.Y);
+            textBox.Location = new Point(panel1.Width + 50, panel1.Location.Y);
+            
+            textBox0.Visible = true;
+            textBox0.Enabled = false;
+            textBox0.BackColor = Color.White;
+            textBox0.Font = new Font("TimeNewRoman", 12);
+            textBox0.Text = "Текущая система уравнений:";
+            textBox0.Width = (textBox.Text.Length - 2) * 8;
+            textBox0.Location = new Point(panel1.Width + 50, textBox.Location.Y + 50);
+            
+            textBox1.Visible = true;
+            textBox1.Enabled = false;
+            textBox1.BackColor = Color.White;
+            textBox1.Font = new Font("TimeNewRoman", 12);
+            textBox1.Text = "y1' = " + exp1 + "  ";
+            textBox1.Width = (textBox1.Text.Length - 2) * 6;
+            textBox1.Location = new Point(panel1.Width + 50, textBox0.Location.Y + 50);
+            
+            textBox2.Visible = true;
+            textBox2.Enabled = false;
+            textBox2.BackColor = Color.White;
+            textBox2.Font = new Font("TimeNewRoman", 12);
+            textBox2.Text = "y2' = " + exp2 + "  ";
+            textBox2.Width = (textBox2.Text.Length - 2) * 6;
+            textBox2.Location = new Point(panel1.Width + 50, textBox1.Location.Y + 50);
+            
             Controls.Add(textBox);
+            Controls.Add(textBox0);
+            Controls.Add(textBox1);
+            Controls.Add(textBox2);
         }
 
         public void Setting_Buttons()
@@ -154,10 +183,10 @@ namespace Basalin__Lab
                 buttons[i].Font = new Font("TimeNewRoman", 12);
                 buttons[i].Text = Names_operations[i];
                 buttons[i].AutoSize = true;
-                int X0 = textBox.Location.X;  /*panel1.Width + (this.Width - panel1.Width) / 3*/;
+                int X0 = textBox.Location.X; 
                 if (i == 0)
                 {
-                    buttons[i].Location = new Point(X0, textBox.Location.Y + coefficient);
+                    buttons[i].Location = new Point(X0, textBox2.Location.Y + coefficient);
                 }
                 else
                 {
