@@ -13,7 +13,7 @@ namespace MethodsKoshi
         private List<int> Nctr;
         private List<double> maxerr;
         //Поменять путь Файла
-        private string filePath = "C:\\Users\\wizze\\source\\repos\\Basalin _Lab\\";
+        private string filePath = "..\\..\\..\\";
     
         private bool IsMethod3 = false;
     
