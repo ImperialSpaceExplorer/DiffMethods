@@ -26,8 +26,8 @@ namespace MethodsKoshi
 
                 while (Xi >= range[0] && Xi <= range[1])
                 {
+                     Y = Ycalc(Y, Xi, hstep[j]);
                     Xi += hstep[j];
-                    Y = Ycalc(Y, Xi, hstep[j]);
 
                     err = 0;
                     for (int i = 0; i < Y.Count; i++) { err += Math.Pow(Y[i] - Ethalon( Xi)[i], 2); }
