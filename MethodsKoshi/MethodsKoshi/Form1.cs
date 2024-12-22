@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MethodsKoshi
+namespace Basalin__Lab
 {
     public partial class Form1 : Form
     {
@@ -28,14 +28,18 @@ namespace MethodsKoshi
 
         public string exp1 = "- 4 * y1 - 2 * y2 + 2 / ( e ^ x - 1 )";
         public string exp2 = "6 * y1 + 3 * y2 - 3 / ( e ^ x - 1 )";
+        IDraw draw;
 
         private void button1_Click(object sender, EventArgs e)
         {
+            
             IsMethod3 = false;
 
             method = new Method_1_Euler(new System.Collections.Generic.List<string>() { exp1, exp2 });
 
             Scenario(0);
+            draw = new DrawGraphics(method, panel1, IsMethod3);
+            draw.Visual_Method();
 
             Name_File = "Method_Euler1" + Spot_plus_txt;
         }
@@ -47,6 +51,9 @@ namespace MethodsKoshi
             method = new Method_2_RungeKutta(new System.Collections.Generic.List<string>() { exp1, exp2 });
 
             Scenario(1);
+
+            draw = new DrawGraphics(method, panel1, IsMethod3);
+            draw.Visual_Method();
 
             Name_File = "Method_RungeKutta" + Spot_plus_txt;
         }
@@ -60,12 +67,16 @@ namespace MethodsKoshi
 
             Scenario(2);
 
+            draw = new DrawGraphics(method, panel1, IsMethod3);
+            draw.Visual_Method();
+
             Name_File = "Method_EndDiff" + Spot_plus_txt;
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             //видимо нам расскажут во вторник 24.12.2024
+            COMING_SOON();
         }
 
         bool IsMethod3;
@@ -101,6 +112,17 @@ namespace MethodsKoshi
 
         TextBox textBox = new TextBox();
 
+        readonly string[] Names_operations =
+            {
+            "Метод Эйлера",
+            "Метод Рунге-Кутты",
+            "Метод Гаусса",
+            "Метод Ньютона",                            //\n(или Метод, основанный на использовании \nконечно-разностной формулы?)
+            "Сохранить использованный \nметод в txt"
+            };
+
+        List<Button> buttons = new List<Button>();
+
         public void Setting_TextBox()
         {
             textBox.Visible = true;
@@ -111,20 +133,9 @@ namespace MethodsKoshi
             textBox.Width = (textBox.Text.Length - 2) * 10;
 
             //textBox.Location = new Point(panel1.Width + (this.Width - panel1.Width) / 3, panel1.Location.Y);
-            textBox.Location = new Point(panel1.Width + (this.Width - panel1.Width) / 3, panel1.Height / 5 + panel1.Location.Y);
+            textBox.Location = new Point(panel1.Width + 50/*(this.Width - panel1.Width) / 3*/, panel1.Location.Y);
             Controls.Add(textBox);
         }
-
-        readonly string[] Names_operations =
-            {
-            "Метод Эйлера",
-            "Метод Рунге-Кутты",
-            "Метод Ньютона",                            //\n(или Метод, основанный на использовании \nконечно-разностной формулы?)
-            "Метод Гаусса",
-            "Сохранить использованный метод в txt"
-            };
-
-        List<Button> buttons = new List<Button>();
 
         public void Setting_Buttons()
         {
@@ -135,7 +146,7 @@ namespace MethodsKoshi
             buttons.Add(button4);
             buttons.Add(button5);
 
-            int coefficient = 100;
+            int coefficient = 50;
 
             for (int i = 0; i < buttons.Count; i++)
             {
@@ -143,7 +154,7 @@ namespace MethodsKoshi
                 buttons[i].Font = new Font("TimeNewRoman", 12);
                 buttons[i].Text = Names_operations[i];
                 buttons[i].AutoSize = true;
-                int X0 = panel1.Width + (this.Width - panel1.Width) / 3;
+                int X0 = textBox.Location.X;  /*panel1.Width + (this.Width - panel1.Width) / 3*/;
                 if (i == 0)
                 {
                     buttons[i].Location = new Point(X0, textBox.Location.Y + coefficient);
@@ -172,6 +183,7 @@ namespace MethodsKoshi
 
         public void Scenario(int Numb_Oper)
         {
+            panel1.Refresh();
             Console.Clear();
             foreach (var button in buttons)
             {
@@ -210,6 +222,22 @@ namespace MethodsKoshi
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Warning
                 );
+        }
+
+        public void COMING_SOON()
+        {
+            MessageBox.Show
+                (
+                "Coming soon",
+                "Ингформация",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+                );
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            
         }
     }
 }
