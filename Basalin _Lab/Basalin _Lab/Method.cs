@@ -175,5 +175,6 @@ namespace Basalin__Lab
         }
 
         public abstract void ToWriteConsole(double h, int Nctr, double err);
+        public abstract List<double> Ycalc(List<double> Yi, double Xi, double step);
     }    
 }
