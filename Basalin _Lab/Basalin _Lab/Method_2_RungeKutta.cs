@@ -42,7 +42,7 @@ namespace Basalin__Lab
             }
         }
 
-        List<double> Ycalc(List<double> Yi, double Xi, double step)
+        public override List<double> Ycalc(List<double> Yi, double Xi, double step)
         {
             List<double> k1 = ToInterpreteExp(Xi, Yi, expression);
 
