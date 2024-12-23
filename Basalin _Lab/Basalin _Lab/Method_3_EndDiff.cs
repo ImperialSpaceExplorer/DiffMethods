@@ -214,7 +214,7 @@ namespace Basalin__Lab
 
         }
 
-        List<double> Ycalc(List<double> Yi, double Xi, double step) //Euler Y quick 1-step calculation
+        public override List<double> Ycalc(List<double> Yi, double Xi, double step) //Euler Y quick 1-step calculation
         {
             List<double> F = ToInterpreteExp(Xi, Yi, expression);
             List<double> Ynew = new List<double>();//
