@@ -21,5 +21,7 @@ namespace Basalin__Lab
         List<double> Get_H();
         List<int> Get_N();
         List<double> Get_Err();
+
+        List<double> Ycalc(List<double> Yi, double Xi, double step);
     }
 }
