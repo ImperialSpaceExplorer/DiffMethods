@@ -12,9 +12,93 @@ namespace Basalin__Lab
         double[] eps = { 0.1, 0.001, 0.00001 };
         double initZ = 0;
 
-        public Method_3_EndDiff(List<string> exp, double Zlen) : base(exp) { initZ = Zlen; }
+        public Method_3_EndDiff(List<string> exp, double Zlen) : base(exp) { initZ = Zlen; met_name = "Method of Finite-Differential Increments"; }
+
 
         public override void ToCalculate()
+        {
+            if (choice == 1) ToCalculateExpressionFromString();
+
+            else ToCalculateElectrosystem();
+        }
+
+        public void ToCalculateElectrosystem()
+        {
+
+            double step = hstep[1], epsilon = eps[1];
+            double tmax = 10;
+            List<double> X = new List<double>() { J * R2, 0 };
+            List<double> Y = Y_expression(X);   //starting conditions
+            int Nctr = 0;
+
+            //1//
+            List<double> Tnodes = new List<double>() { 0 };
+            List<List<double>> Xnodes = new List<List<double>>(); List<List<double>> Ynodes = new List<List<double>>();  //starting conditions
+            Xnodes.Add(X); Ynodes.Add(Y);
+            resultsX.Add(X); resultsY.Add(Y);
+            //h=-tau0;
+            for (int i = 0; i < 3; i++)
+            {
+                Tnodes.Add(Tnodes.Last() + step);
+                Xnodes.Add(Electrosystem_Calculation_Euler_X(Xnodes.Last(), step));
+                Ynodes.Add(Electrosystem_Calculation_Euler_Y( Xnodes.Last(), step));
+
+                resultsX.Add(Xnodes.Last()); resultsY.Add(Ynodes.Last());
+
+                //ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), i+1);
+            }
+
+            Nctr = Ynodes.Count;
+
+            //h=z
+            double ZnodeT = Tnodes[3] + initZ;
+            List<double> ZnodeX = Electrosystem_Calculation_Euler_X(Xnodes[3], initZ);
+            //List<double> ZnodeY = Electrosystem_Calculation_Euler_Y(Ynodes[0], Xnodes[0],initZ);
+
+            //2//
+            //max of 4th derivatives
+            double K = InterPolyLagrDeriv(Tnodes, ZnodeT, Xnodes, ZnodeX);
+
+            //3//
+            while (Tnodes.Last() <= tmax) //stopcond tomake
+            {
+                //4//
+                double taui_1 = Tnodes[Tnodes.Count - 1] - Tnodes[Tnodes.Count - 2];
+                double delta = 2 * epsilon / K;
+                //approximative calculation due to 5th grade equation doesnt have accurate decision, accuracy here is 1e-6
+                double taui = Fi_calc(taui_1, delta);
+                //if (taui == 0) break;
+
+                //5//
+                for (int i = 0; i < 2; i++)
+                {
+                   
+                    Xnodes.Add(GaussLinearDecision(Tnodes, Xnodes, taui));
+                    Ynodes.Add(Y_expression(Xnodes.Last()));
+                    Tnodes.Add(Tnodes.Last() + taui);
+                    resultsX.Add(Xnodes.Last()); resultsY.Add(Ynodes.Last());
+
+                    //ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), Nctr);
+                    
+                    Nctr++;
+
+                }
+
+                //6//
+                initZ = Math.Max(initZ, taui);
+
+                if (Tnodes.Last() > ZnodeT)
+                {
+                    ZnodeX = Electrosystem_Calculation_Euler_X(Xnodes.Last(), initZ);
+
+                    ZnodeT = Tnodes.Last() + initZ;
+                    K = InterPolyLagrDeriv(Tnodes, ZnodeT, Xnodes, ZnodeX);
+                }
+            }
+
+        }
+
+        public override void ToCalculateExpressionFromString()
         {
 
             for (int k = 0; k < eps.Length; k++)
@@ -24,7 +108,7 @@ namespace Basalin__Lab
                 {
                     //start conditions
                     double X0 = 0.1;
-                    List<double> Y0 = new List<double>() { 1, -2 };
+                    List<double> Y0 = new List<double>() {  0.543657082, -1.31548562239629 };
                     double[] range = new double[] { 0.1, 10 };
 
                     //for counting
@@ -109,7 +193,7 @@ namespace Basalin__Lab
             double ai_3 = 1 - ai_2 - ai_1;
 
             List<List<double>> B = new List<List<double>>(); List<double> b = new List<double>();
-            LinearComponentsCalc(ref B, ref b, Xnodes[Xnodes.Count - 1] + hi);
+            LinearComponentsChoice(ref B, ref b, Xnodes.Last() + hi);
 
             List<List<double>> E = getEmatrix(B.Count);
 
@@ -173,6 +257,24 @@ namespace Basalin__Lab
                 }
             }
             return E;
+        }
+
+        void LinearComponentsChoice(ref List<List<double>> B, ref List<double> b, double Xi)
+        {
+            if (choice == 1) LinearComponentsCalc(ref B, ref b, Xi);
+            else LinearComponentsCalc_Electrosystem(ref B, ref b);
+        }
+
+        void LinearComponentsCalc_Electrosystem(ref List<List<double>> B, ref List<double> b)
+        {
+            List<List<double>> Bbuf = new List<List<double>>(); List<double> bbuf = new List<double>();
+
+            Bbuf.Add(new List<double>() { -1 / (C * R2), -1 / C });
+            Bbuf.Add(new List<double>() { 1 / L, -R1 / L });
+            bbuf.Add(1 / C * J); bbuf.Add(0);
+
+            B = Bbuf; b = bbuf;
+
         }
 
         void LinearComponentsCalc(ref List<List<double>> B, ref List<double> b, double Xi)
