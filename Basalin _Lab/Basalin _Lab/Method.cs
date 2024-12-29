@@ -38,6 +38,19 @@ namespace Basalin__Lab
         //**********************************************************************************
 
 
+        protected string met_name;
+
+        public string Name { get { return met_name; } }
+
+        protected int choice = 2;
+
+        protected static double C = 2, R1 = 2, R2 = 2, L = 2, J = 2;
+
+        protected List<List<double>> resultsX, resultsY;
+
+        public List<List<double>> Results_X { get { return resultsX; } }
+        public List<List<double>> Results_Y { get { return resultsY; } }
+
         protected List<List<string>> expression;
 
         public Method(List<string> expression)
@@ -45,10 +58,22 @@ namespace Basalin__Lab
             this.expression = new List<List<string>>();
             foreach (string exp in expression)
             {
-                this.expression.Add( exp.Split(' ').ToList());
+                this.expression.Add( exp.Split(" ").ToList());
             }
+
+            resultsX = new List<List<double>>(); resultsY = new List<List<double>>();
+
         }
 
+        public void ToGetChoice() {
+            Console.WriteLine("Выберите решение:\n 1 - тестовая задача, 2 - электросистема");
+            choice = Convert.ToInt32( Console.ReadLine());
+        }
+
+        public void ToSetChoice(int ch) {
+            choice = ch;
+        }
+        
         public abstract void ToCalculate();
 
         protected List<double> ToInterpreteExp(double Xi, List<double> Y, List<List<string>> expression)   //let exp be = "Y1' = y1 - y2 + e ^ x"
@@ -162,12 +187,12 @@ namespace Basalin__Lab
         protected List<double> Ethalon(double Xi)    
         {
             List<double> res = new List<double>();
-            //res.Add(1 + 4 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
+            res.Add(1 + 4 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
 
             //res.Add(1 - 1.48879 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) + 1));
-            res.Add(1 + 4.504340245 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
+            //res.Add(1 + 4.504340245 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
 
-            //res.Add(-2 - 6 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
+            res.Add(-2 - 6 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
 
             //res.Add(-2 + 2.23319 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) + 1));
             res.Add(-2 - 6.756505364 * Math.Pow(Math.E, -1 * Xi) - 3 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
@@ -176,5 +201,44 @@ namespace Basalin__Lab
 
         public abstract void ToWriteConsole(double h, int Nctr, double err);
         public abstract List<double> Ycalc(List<double> Yi, double Xi, double step);
+
+         protected List<double> X_expression(List<double> Xi) {
+
+            List<double> Xnew = new List<double>();
+            Xnew.Add(- 1 / (C * R2) * Xi[0] - 1 / C * Xi[1] + 1 / C * J);
+            Xnew.Add( 1 / L * Xi[0] - R1 / L* Xi[1] );
+            return Xnew;
+        }
+
+
+        protected List<double> Y_expression(List<double> Xi)
+        {
+
+            List<double> Ynew = new List<double>();
+            Ynew.Add(1 / R2 * Xi[0]);
+            Ynew.Add(-1 / R2 * Xi[0] - Xi[1] +J);
+            return Ynew;
+        }
+
+        protected void ConsoleElectrosystemResult(List<double> X, List<double> Y,int ctr) {
+            Console.WriteLine("Iteration: {0} | X = ({1},{2});   Y = ({3},{4})", ctr,X[0],X[1], Y[0],Y[1]);
+        }
+
+        protected List<double> Electrosystem_Calculation_Euler_X(List<double> Xi, double step)
+        {
+            List<double> Xexp = X_expression(Xi), Xnew = new List<double>();
+
+            for (int i = 0; i < Xexp.Count; i++)
+            {
+                Xnew.Add(Xi[i] + step * Xexp[i]);
+            }
+
+            return Xnew;
+        }
+
+        protected List<double> Electrosystem_Calculation_Euler_Y(List<double> Xi, double step)
+        {
+            return Y_expression(Xi);
+        }
     }    
 }
