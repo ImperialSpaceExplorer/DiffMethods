@@ -11,9 +11,17 @@ namespace Basalin__Lab
        
         double[] hstep = { 0.01, 0.001, 0.0001, 0.00001};
 
-        public Method_1_Euler(List<string> exp) : base(exp) { }
+        public Method_1_Euler(List<string> exp) : base(exp) { met_name = "Method of Euler"; }
 
         public override void ToCalculate()
+        {
+            if (choice == 1) ToCalculateExpressionFromString();
+
+            else ToCalculateElectrosystem();
+        }
+
+
+        public override void ToCalculateExpressionFromString()
         {        
             double[] range = new double[]{ 0.1, 10 };
 
@@ -21,7 +29,7 @@ namespace Basalin__Lab
             {
                 double Xi = 0.1, err=0; 
                 List<double> Y = new List<double>();   //starting conditions
-                Y.Add(1); Y.Add(-2);
+                 Y.Add(0.543657082); Y.Add(-1.31548562239629);
                 double maxerr = 0;
                 int Nctr = 0;
 
@@ -50,6 +58,34 @@ namespace Basalin__Lab
                 Ynew.Add(Yi[i] + step*F[i]);
             }
             return Ynew;
+        }
+
+         public void ToCalculateElectrosystem()
+        {
+
+            double step = hstep[0];
+            double t = 0, tmax = 10;
+            List<double> X = new List<double>() { J * R2, 0 };
+            List<double> Y = Y_expression(X);   //starting conditions
+
+            resultsX.Add(X); resultsY.Add(Y);
+
+            int Nctr = 0;
+
+            //ConsoleElectrosystemResult(X, Y, Nctr);
+
+            while (t < tmax)
+            {
+                Nctr++;
+                t += step;
+                X = Electrosystem_Calculation_Euler_X(X, step);
+                Y = Electrosystem_Calculation_Euler_Y( X, step);
+                //ConsoleElectrosystemResult(X, Y, Nctr);
+
+
+                resultsX.Add(X); resultsY.Add(Y);
+            }
+
         }
 
         public override void ToWriteConsole(double h, int Nctr, double err)
