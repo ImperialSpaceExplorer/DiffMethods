@@ -21,7 +21,7 @@ namespace Basalin__Lab
         }
 
 
-        public void ToCalculateExpressionFromString()
+         void ToCalculateExpressionFromString()
         {        
             double[] range = new double[]{ 0.1, 10 };
 
@@ -60,7 +60,7 @@ namespace Basalin__Lab
             return Ynew;
         }
 
-         public void ToCalculateElectrosystem()
+          void ToCalculateElectrosystem()
         {
 
             double step = hstep[0];
