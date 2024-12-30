@@ -42,7 +42,7 @@ namespace Basalin__Lab
 
         public string Name { get { return met_name; } }
 
-        protected int choice = 2;
+        protected int choice = 1;
 
         protected static double C = 2, R1 = 2, R2 = 2, L = 2, J = 2;    //set as the fixed parameters, may be parametrised
 
