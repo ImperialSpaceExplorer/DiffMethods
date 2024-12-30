@@ -22,6 +22,6 @@ namespace Basalin__Lab
         List<int> Get_N();
         List<double> Get_Err();
 
-        List<double> Ycalc(List<double> Yi, double Xi, double step);
+        void ToSetChoice(int ch);
     }
 }
