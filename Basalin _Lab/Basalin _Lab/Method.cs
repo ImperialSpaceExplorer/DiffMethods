@@ -44,7 +44,7 @@ namespace Basalin__Lab
 
         protected int choice = 2;
 
-        protected static double C = 2, R1 = 2, R2 = 2, L = 2, J = 2;
+        protected static double C = 2, R1 = 2, R2 = 2, L = 2, J = 2;    //set as the fixed parameters, may be parametrised
 
         protected List<List<double>> resultsX, resultsY;
 
@@ -58,7 +58,7 @@ namespace Basalin__Lab
             this.expression = new List<List<string>>();
             foreach (string exp in expression)
             {
-                this.expression.Add( exp.Split(" ").ToList());
+                this.expression.Add( exp.Split(' ').ToList());
             }
 
             resultsX = new List<List<double>>(); resultsY = new List<List<double>>();
