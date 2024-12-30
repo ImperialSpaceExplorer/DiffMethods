@@ -37,6 +37,8 @@ namespace Basalin__Lab
 
             method = new Method_1_Euler(new System.Collections.Generic.List<string>() { exp1, exp2 });
 
+             IsCalculatingElectrosystem(method);
+
             Scenario(0);
             draw = new DrawGraphics(method, panel1, IsMethod3);
             draw.Visual_Method();
@@ -49,6 +51,8 @@ namespace Basalin__Lab
             IsMethod3 = false;
 
             method = new Method_2_RungeKutta(new System.Collections.Generic.List<string>() { exp1, exp2 });
+
+             IsCalculatingElectrosystem(method);
 
             Scenario(1);
 
@@ -64,6 +68,8 @@ namespace Basalin__Lab
 
             double z = 0.1;
             method = new Method_3_EndDiff(new System.Collections.Generic.List<string>() { exp1, exp2 }, z);
+
+             IsCalculatingElectrosystem(method);
 
             Scenario(2);
 
@@ -84,6 +90,11 @@ namespace Basalin__Lab
         {
             new Class_Saves(Name_File, method.Get_H(), method.Get_N(), method.Get_Err(), IsMethod3).Save();
             WARNING();
+        }
+
+        public void IsCalculatingElectrosystem(IMethod m) {
+            DialogResult dr = MessageBox.Show("Расчёт электрической системы?", "Выбор режима", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes) m.ToSetChoice(2);
         }
 
         public void Setting_Form()
