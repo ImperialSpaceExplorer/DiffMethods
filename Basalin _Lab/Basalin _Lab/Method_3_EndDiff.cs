@@ -45,7 +45,7 @@ namespace Basalin__Lab
 
                 resultsX.Add(Xnodes.Last()); resultsY.Add(Ynodes.Last());
 
-                //ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), i+1);
+                ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), i+1);
             }
 
             Nctr = Ynodes.Count;
@@ -78,7 +78,7 @@ namespace Basalin__Lab
                     Tnodes.Add(Tnodes.Last() + taui);
                     resultsX.Add(Xnodes.Last()); resultsY.Add(Ynodes.Last());
 
-                    //ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), Nctr);
+                    ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), Nctr);
                     
                     Nctr++;
 
