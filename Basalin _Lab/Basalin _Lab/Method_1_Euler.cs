@@ -21,7 +21,7 @@ namespace Basalin__Lab
         }
 
 
-        public override void ToCalculateExpressionFromString()
+        public void ToCalculateExpressionFromString()
         {        
             double[] range = new double[]{ 0.1, 10 };
 
