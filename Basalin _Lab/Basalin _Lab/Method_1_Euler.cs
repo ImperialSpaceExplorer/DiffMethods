@@ -72,7 +72,7 @@ namespace Basalin__Lab
 
             int Nctr = 0;
 
-            //ConsoleElectrosystemResult(X, Y, Nctr);
+            ConsoleElectrosystemResult(X, Y, Nctr);
 
             while (t < tmax)
             {
@@ -80,7 +80,7 @@ namespace Basalin__Lab
                 t += step;
                 X = Electrosystem_Calculation_Euler_X(X, step);
                 Y = Electrosystem_Calculation_Euler_Y( X, step);
-                //ConsoleElectrosystemResult(X, Y, Nctr);
+                ConsoleElectrosystemResult(X, Y, Nctr);
 
 
                 resultsX.Add(X); resultsY.Add(Y);
