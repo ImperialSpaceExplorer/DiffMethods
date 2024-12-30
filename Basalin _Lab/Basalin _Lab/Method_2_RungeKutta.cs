@@ -19,7 +19,7 @@ namespace Basalin__Lab
             else ToCalculateElectrosystem();
         }
 
-public void ToCalculateElectrosystem()
+ void ToCalculateElectrosystem()
         {
 
             double step = hstep[0];
@@ -75,7 +75,7 @@ public void ToCalculateElectrosystem()
         }
 
 
-        public void ToCalculateExpressionFromString()
+         void ToCalculateExpressionFromString()
         {
             double[] range = new double[] { 0.1, 10 };
 
