@@ -18,3 +18,13 @@ C:\Users\Антон\Documents\Проектирование микроэлект�
 C:\Users\Антон\Documents\Проектирование микроэлектроники\Basalin\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.csproj.CoreCompileInputs.cache
 C:\Users\Антон\Documents\Проектирование микроэлектроники\Basalin\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.exe
 C:\Users\Антон\Documents\Проектирование микроэлектроники\Basalin\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.pdb
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\bin\Debug\Basalin _Lab.exe.config
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\bin\Debug\Basalin _Lab.exe
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\bin\Debug\Basalin _Lab.pdb
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.csproj.AssemblyReference.cache
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin__Lab.Form1.resources
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin__Lab.Properties.Resources.resources
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.csproj.GenerateResource.cache
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.csproj.CoreCompileInputs.cache
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.exe
+C:\Users\Антон\Documents\Downloads\DiffMethods-main\Basalin _Lab\Basalin _Lab\obj\Debug\Basalin _Lab.pdb
