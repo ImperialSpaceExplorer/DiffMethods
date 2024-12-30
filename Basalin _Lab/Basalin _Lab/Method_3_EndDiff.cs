@@ -22,7 +22,7 @@ namespace Basalin__Lab
             else ToCalculateElectrosystem();
         }
 
-        public void ToCalculateElectrosystem()
+        void ToCalculateElectrosystem()
         {
 
             double step = hstep[1], epsilon = eps[1];
@@ -98,7 +98,7 @@ namespace Basalin__Lab
 
         }
 
-        public override void ToCalculateExpressionFromString()
+         void ToCalculateExpressionFromString()
         {
 
             for (int k = 0; k < eps.Length; k++)
