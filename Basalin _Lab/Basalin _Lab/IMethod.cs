@@ -8,6 +8,13 @@ namespace Basalin__Lab
 {
     public interface IMethod
     {
+        string Name { get; }
+
+        List<List<double>> Results_X { get; }
+        List<List<double>> Results_Y { get; }
+
+
+        
         //for organised interpretation of an expression
         //void ToInterpreteExp();  
 
