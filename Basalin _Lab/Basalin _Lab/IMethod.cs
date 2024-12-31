@@ -30,5 +30,7 @@ namespace Basalin__Lab
         List<double> Get_Err();
 
         void ToSetChoice(int ch);
+        void ToGetChoice();
+
     }
 }
