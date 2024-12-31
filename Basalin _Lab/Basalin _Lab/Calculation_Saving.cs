@@ -8,9 +8,9 @@ namespace Basalin__Lab
 {
     class Calculations_Saving:ISaving
     {
-        Method met;
+          IMethod met;
 
-        public Calculations_Saving(Method m) { met = m; }
+        public Calculations_Saving(IMethod m) { met = m; }
 
         public void Save() {
             System.IO.FileStream fsWrite = System.IO.File.Open("..\\..\\..\\" + met.Name +"_output.txt", System.IO.FileMode.Create);
