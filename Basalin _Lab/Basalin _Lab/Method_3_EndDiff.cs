@@ -127,7 +127,7 @@ namespace Basalin__Lab
                         Ynodes.Insert(0, Ycalc(Ynodes[0], Xnodes[i], -hstep[j]));
 
                         err = 0;
-                        for (int l = 0; l < Ynodes[0].Count; l++) { err += Math.Pow(Ynodes[0][l] - Ethalon(Xnodes[i])[l], 2); }
+                        for (int l = 0; l < Ynodes[0].Count; l++) { if (err < Ynodes[0][l] - Ethalon(Xnodes[i])[l]) err = Ynodes[0][l] - Ethalon(Xnodes[i])[l]; }
                         if (err > maxerr) maxerr = err;
 
                     }
@@ -160,9 +160,8 @@ namespace Basalin__Lab
                             Xnodes.Add(Xnodes[Xnodes.Count - 1] + taui);
                             Nctr++;
 
-                            err = 0;
-                            for (int l = 0; l < Ynodes[Ynodes.Count - 1].Count; l++) { err += Math.Pow(Ynodes[Ynodes.Count - 1][l] - Ethalon(Xnodes[Xnodes.Count - 1])[l], 2); }
-                            err = Math.Sqrt(err);
+                           err = 0;
+                            for (int l = 0; l < Ynodes[Ynodes.Count - 1].Count; l++) { if (err < Ynodes[Ynodes.Count - 1][l] - Ethalon(Xnodes[Xnodes.Count - 1])[l]) err = Ynodes[Ynodes.Count - 1][l] - Ethalon(Xnodes[Xnodes.Count - 1])[l]; }
                             if (err > maxerr) maxerr = err;
                         }
 
