@@ -92,9 +92,8 @@ namespace Basalin__Lab
                      Y = Ycalc(Y, Xi, hstep[j]);
                     Xi += hstep[j];
 
-                    err = 0;
-                    for (int i = 0; i < Y.Count; i++) { err += Math.Pow(Y[i] - Ethalon( Xi)[i], 2); }
-                    err = Math.Sqrt(err);
+                     err = 0;
+                    for (int i = 0; i < Y.Count; i++) { if (err < Y[i] - Ethalon(Xi)[i]) err = Y[i] - Ethalon(Xi)[i]; }
                     if (err > maxerr) maxerr = err;
 
                     Nctr++;
