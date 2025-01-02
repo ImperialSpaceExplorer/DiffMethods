@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Basalin__Lab
 {
-    class Method_1_Euler : Method
+    public class Method_1_Euler : Method
     {
-       
-        double[] hstep = { 0.01, 0.001, 0.0001, 0.00001};
+
+        double[] hstep = { 0.01, 0.001, 0.0001, 0.00001 };
 
         public Method_1_Euler(List<string> exp) : base(exp) { met_name = "Method of Euler"; }
 
@@ -21,15 +21,15 @@ namespace Basalin__Lab
         }
 
 
-         void ToCalculateExpressionFromString()
-        {        
-            double[] range = new double[]{ 0.1, 10 };
+        void ToCalculateExpressionFromString()
+        {
+            double[] range = new double[] { 0.1, 10 };
 
             for (int j = 0; j < hstep.Length; j++)
             {
-                double Xi = 0.1, err=0; 
+                double Xi = 0.1, err = 0;
                 List<double> Y = new List<double>();   //starting conditions
-                 Y.Add(0.543657082); Y.Add(-1.31548562239629);
+                Y.Add(0.543657082); Y.Add(-1.31548562239629);
                 double maxerr = 0;
                 int Nctr = 0;
 
@@ -43,22 +43,24 @@ namespace Basalin__Lab
                     if (err > maxerr) maxerr = err;
                     Nctr++;
                 }
-                
+
                 ADDING_DATA_FOR_SAVE(hstep[j], Nctr, maxerr);
                 ToWriteConsole(hstep[j], Nctr, maxerr);
             }
         }
 
-        public override List<double> Ycalc(List<double> Yi, double Xi, double step) {
+        public override List<double> Ycalc(List<double> Yi, double Xi, double step)
+        {
             List<double> F = ToInterpreteExp(Xi, Yi, expression);
             List<double> Ynew = new List<double>();//
-            for(int i=0;i<Yi.Count;i++) {
-                Ynew.Add(Yi[i] + step*F[i]);
+            for (int i = 0; i < Yi.Count; i++)
+            {
+                Ynew.Add(Yi[i] + step * F[i]);
             }
             return Ynew;
         }
 
-          void ToCalculateElectrosystem()
+        void ToCalculateElectrosystem()
         {
 
             double step = hstep[0];
@@ -77,7 +79,7 @@ namespace Basalin__Lab
                 Nctr++;
                 t += step;
                 X = Electrosystem_Calculation_Euler_X(X, step);
-                Y = Electrosystem_Calculation_Euler_Y( X, step);
+                Y = Electrosystem_Calculation_Euler_Y(X, step);
                 ConsoleElectrosystemResult(X, Y, Nctr);
 
 

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Basalin__Lab
 {
-    class Calculations_Saving:ISaving
+    class Calculations_Saving : ISaving
     {
-          IMethod met;
+        IMethod met;
 
         public Calculations_Saving(IMethod m) { met = m; }
 

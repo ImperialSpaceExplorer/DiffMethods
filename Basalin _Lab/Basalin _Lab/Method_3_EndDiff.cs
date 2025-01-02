@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Basalin__Lab
 {
-    class Method_3_EndDiff : Method
+    public class Method_3_EndDiff : Method
     {
         double[] hstep = { 0.01, 0.001, 0.0001, 0.00001 };
         double[] eps = { 0.1, 0.001, 0.00001 };
@@ -41,11 +41,11 @@ namespace Basalin__Lab
             {
                 Tnodes.Add(Tnodes.Last() + step);
                 Xnodes.Add(Electrosystem_Calculation_Euler_X(Xnodes.Last(), step));
-                Ynodes.Add(Electrosystem_Calculation_Euler_Y( Xnodes.Last(), step));
+                Ynodes.Add(Electrosystem_Calculation_Euler_Y(Xnodes.Last(), step));
 
                 resultsX.Add(Xnodes.Last()); resultsY.Add(Ynodes.Last());
 
-                ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), i+1);
+                ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), i + 1);
             }
 
             Nctr = Ynodes.Count;
@@ -72,14 +72,14 @@ namespace Basalin__Lab
                 //5//
                 for (int i = 0; i < 2; i++)
                 {
-                   
+
                     Xnodes.Add(GaussLinearDecision(Tnodes, Xnodes, taui));
                     Ynodes.Add(Y_expression(Xnodes.Last()));
                     Tnodes.Add(Tnodes.Last() + taui);
                     resultsX.Add(Xnodes.Last()); resultsY.Add(Ynodes.Last());
 
                     ConsoleElectrosystemResult(Xnodes.Last(), Ynodes.Last(), Nctr);
-                    
+
                     Nctr++;
 
                 }
@@ -98,7 +98,7 @@ namespace Basalin__Lab
 
         }
 
-         void ToCalculateExpressionFromString()
+        void ToCalculateExpressionFromString()
         {
 
             for (int k = 0; k < eps.Length; k++)
@@ -108,7 +108,7 @@ namespace Basalin__Lab
                 {
                     //start conditions
                     double X0 = 0.1;
-                    List<double> Y0 = new List<double>() {  0.543657082, -1.31548562239629 };
+                    List<double> Y0 = new List<double>() { 0.543657082, -1.31548562239629 };
                     double[] range = new double[] { 0.1, 10 };
 
                     //for counting
@@ -160,7 +160,7 @@ namespace Basalin__Lab
                             Xnodes.Add(Xnodes[Xnodes.Count - 1] + taui);
                             Nctr++;
 
-                           err = 0;
+                            err = 0;
                             for (int l = 0; l < Ynodes[Ynodes.Count - 1].Count; l++) { if (err < Ynodes[Ynodes.Count - 1][l] - Ethalon(Xnodes[Xnodes.Count - 1])[l]) err = Ynodes[Ynodes.Count - 1][l] - Ethalon(Xnodes[Xnodes.Count - 1])[l]; }
                             if (err > maxerr) maxerr = err;
                         }

@@ -13,7 +13,7 @@ namespace Basalin__Lab
         private List<int> Nctr;
         private List<double> maxerr;
         //Поменять путь Файла
-        private string filePath = "..\\..\\..\\";
+        private string filePath = "C:.\\..\\..\\..\\";
 
         private bool IsMethod3 = false;
 

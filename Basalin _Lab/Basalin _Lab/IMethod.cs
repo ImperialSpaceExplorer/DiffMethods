@@ -13,13 +13,11 @@ namespace Basalin__Lab
         List<List<double>> Results_X { get; }
         List<List<double>> Results_Y { get; }
 
-
-        
         //for organised interpretation of an expression
         //void ToInterpreteExp();  
 
         //for calculations
-        void ToCalculate(); 
+        void ToCalculate();
 
         //for formalised output of each method in a console, add values to write in arguments
         void ToWriteConsole(double h, int Nctr, double err);

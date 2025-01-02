@@ -6,32 +6,32 @@ using System.Threading.Tasks;
 
 namespace Basalin__Lab
 {
-    abstract class Method : IMethod
+    public abstract class Method : IMethod
     {
         //добавляю в начале класса, чтобы тебе быстрее было что исправить у себя
         public List<double> Get_H()
         {
             return Hstep;
         }
-        
+
         public List<int> Get_N()
         {
             return NctR;
         }
-        
+
         public List<double> Get_Err()
         {
             return Maxerr;
         }
 
-                //Добавление функции для сбора данных
+        //Добавление функции для сбора данных
         protected void ADDING_DATA_FOR_SAVE(double h, int Nctr, double err)
         {
             Hstep.Add(h);
             NctR.Add(Nctr);
             Maxerr.Add(err);
         }
-        
+
         protected List<double> Hstep = new List<double>();
         protected List<int> NctR = new List<int>();
         protected List<double> Maxerr = new List<double>();
@@ -44,7 +44,9 @@ namespace Basalin__Lab
 
         protected int choice = 1;
 
-        protected static double C = 2, R1 = 2, R2 = 2, L = 2, J = 2;    //set as the fixed parameters, may be parametrised
+
+        //                                    ПАРАМЕТРЫ
+        protected static double C = 2, R1 = 2, R2 =2, L = 2, J = 2;    //set as the fixed parameters, may be parametrised
 
         protected List<List<double>> resultsX, resultsY;
 
@@ -58,22 +60,24 @@ namespace Basalin__Lab
             this.expression = new List<List<string>>();
             foreach (string exp in expression)
             {
-                this.expression.Add( exp.Split(' ').ToList());
+                this.expression.Add(exp.Split(' ').ToList());
             }
 
             resultsX = new List<List<double>>(); resultsY = new List<List<double>>();
 
         }
 
-        public void ToGetChoice() {
+        public void ToGetChoice()
+        {
             Console.WriteLine("Выберите решение:\n 1 - тестовая задача, 2 - электросистема");
-            choice = Convert.ToInt32( Console.ReadLine());
+            choice = Convert.ToInt32(Console.ReadLine());
         }
 
-        public void ToSetChoice(int ch) {
+        public void ToSetChoice(int ch)
+        {
             choice = ch;
         }
-        
+
         public abstract void ToCalculate();
 
         protected List<double> ToInterpreteExp(double Xi, List<double> Y, List<List<string>> expression)   //let exp be = "Y1' = y1 - y2 + e ^ x"
@@ -120,17 +124,19 @@ namespace Basalin__Lab
                     }
                 }
 
-                if (operators.Count >= values.Count) {
-                    if (operators[0] == "-"){ values[0] *= -1; operators.RemoveAt(0); } 
-                    else if(operators[0] == "+") operators.RemoveAt(0);
+                if (operators.Count >= values.Count)
+                {
+                    if (operators[0] == "-") { values[0] *= -1; operators.RemoveAt(0); }
+                    else if (operators[0] == "+") operators.RemoveAt(0);
                 }
-                
+
                 while (values.Count > 1)
                 {
                     int figcount = 0;
                     int[] ctrs = util_find_fig(operators);
                     int begctr = ctrs[0], endctr = ctrs[1];
-                    if (ctrs[0] != 0 || ctrs[1] != operators.Count-1) {
+                    if (ctrs[0] != 0 || ctrs[1] != operators.Count - 1)
+                    {
                         if (ctrs[1] == ctrs[0] + 1) { operators.RemoveAt(ctrs[0]); operators.RemoveAt(ctrs[1] - 1); endctr -= 2; }
                         else { begctr++; endctr--; figcount++; }
                     }
@@ -138,7 +144,7 @@ namespace Basalin__Lab
                     switch (operators[curr_oper])
                     {
                         case "^":
-                            values[curr_oper-figcount] = Math.Pow(values[curr_oper - figcount], values[curr_oper - figcount + 1]);
+                            values[curr_oper - figcount] = Math.Pow(values[curr_oper - figcount], values[curr_oper - figcount + 1]);
                             break;
                         case "*":
                             values[curr_oper - figcount] *= values[curr_oper - figcount + 1];
@@ -161,10 +167,13 @@ namespace Basalin__Lab
             return res;
         }
 
-        int util_find_max_priority(List<string> opers, int[] range) {
+        int util_find_max_priority(List<string> opers, int[] range)
+        {
             int ind = 0; string highest = "";
-            for(int i=range[0];i<=range[1];i++){
-                switch (opers[i]) {
+            for (int i = range[0]; i <= range[1]; i++)
+            {
+                switch (opers[i])
+                {
                     case "^": return i;
                     case "*": if (highest != "^" && highest != "*" && highest != "/") { ind = i; highest = "*"; } break;
                     case "/": if (highest != "^" && highest != "*" && highest != "/") { ind = i; highest = "/"; } break;
@@ -175,16 +184,18 @@ namespace Basalin__Lab
             return ind;
         }
 
-        int[] util_find_fig(List<string> opers) { 
-            int[] inds = { 0, opers.Count-1 };
-            for (int i = 0; i < opers.Count; i++) { 
-                if (opers[i] == "(") inds[0]=i;
+        int[] util_find_fig(List<string> opers)
+        {
+            int[] inds = { 0, opers.Count - 1 };
+            for (int i = 0; i < opers.Count; i++)
+            {
+                if (opers[i] == "(") inds[0] = i;
                 if (opers[i] == ")") { inds[1] = i; break; }
             }
             return inds;
         }
 
-        protected List<double> Ethalon(double Xi)    
+        protected List<double> Ethalon(double Xi)
         {
             List<double> res = new List<double>();
             res.Add(1 + 4 * Math.Pow(Math.E, -1 * Xi) + 2 * Math.Pow(Math.E, -1 * Xi) * Math.Log(Math.Pow(Math.E, Xi) - 1));
@@ -202,11 +213,12 @@ namespace Basalin__Lab
         public abstract void ToWriteConsole(double h, int Nctr, double err);
         public abstract List<double> Ycalc(List<double> Yi, double Xi, double step);
 
-         protected List<double> X_expression(List<double> Xi) {
+        protected List<double> X_expression(List<double> Xi)
+        {
 
             List<double> Xnew = new List<double>();
-            Xnew.Add(- 1 / (C * R2) * Xi[0] - 1 / C * Xi[1] + 1 / C * J);
-            Xnew.Add( 1 / L * Xi[0] - R1 / L* Xi[1] );
+            Xnew.Add(-1 / (C * R2) * Xi[0] - 1 / C * Xi[1] + 1 / C * J);
+            Xnew.Add(1 / L * Xi[0] - R1 / L * Xi[1]);
             return Xnew;
         }
 
@@ -216,12 +228,13 @@ namespace Basalin__Lab
 
             List<double> Ynew = new List<double>();
             Ynew.Add(1 / R2 * Xi[0]);
-            Ynew.Add(-1 / R2 * Xi[0] - Xi[1] +J);
+            Ynew.Add(-1 / R2 * Xi[0] - Xi[1] + J);
             return Ynew;
         }
 
-        protected void ConsoleElectrosystemResult(List<double> X, List<double> Y,int ctr) {
-            Console.WriteLine("Iteration: {0} | X = ({1},{2});   Y = ({3},{4})", ctr,X[0],X[1], Y[0],Y[1]);
+        protected void ConsoleElectrosystemResult(List<double> X, List<double> Y, int ctr)
+        {
+            Console.WriteLine("Iteration: {0} | X = ({1},{2});   Y = ({3},\t{4})", ctr, X[0], X[1], Y[0], Y[1]);
         }
 
         protected List<double> Electrosystem_Calculation_Euler_X(List<double> Xi, double step)
@@ -241,8 +254,8 @@ namespace Basalin__Lab
             return Y_expression(Xi);
         }
 
-         public List<double> GetParameters_CR1R2LJ() {
+        public List<double> GetParameters_CR1R2LJ() {
             return new List<double>() {C,R1,R2,L,J };
         }
-    }    
+    }
 }
