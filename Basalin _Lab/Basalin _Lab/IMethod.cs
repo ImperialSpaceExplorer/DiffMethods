@@ -32,5 +32,6 @@ namespace Basalin__Lab
         void ToSetChoice(int ch);
         void ToGetChoice();
 
+        List<double> GetParameters_CR1R2LJ();
     }
 }
