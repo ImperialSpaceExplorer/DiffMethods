@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -17,30 +18,63 @@ namespace Basalin__Lab
         {
             InitializeComponent();
             Settings_PFTB_Parameters();
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            button5.Enabled = false;
+            
+
+            button4.Enabled = false;
+            // Создаем таймер для периодической проверки наличия файлов
+            Timer timer = new Timer();
+
+            timer.Interval = 50; // Проверять каждые 1 секунду (можно изменить интервал)
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Start(); // Запускаем таймер
+
+            Method_2_RungeKutta method = new Method_2_RungeKutta(new List<string> { exp1, exp2 });
+
+            double[] hstep = { 0.01, 0.001, 0.0001, 0.00001 };
+            double Xi = 0.1;
+            List<double> Y = new List<double>();
+            Y.Add(1); Y.Add(-2);
+            List<double> result = method.Ycalc(Y, Xi, hstep[0]);
+            double numb1 = 1.1798794256986063;
+            double numb2 = -2.2698191385479096;
+            List<double> check = new List<double>() { numb1, numb2 };
+            bool falg = false;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            string directoryPath = "C:.\\..\\..\\..\\";
+            // Проверяем наличие .txt файлов в директории
+            string[] txtFiles = Directory.GetFiles(directoryPath, "*.txt");
+
+            // Обновляем состояние кнопки
+            this.button5.Enabled = (txtFiles.Length > 0); // Включаем кнопку, если есть хотя бы один .txt файл
         }
 
         IMethod method;
-
         public string exp1 = "- 4 * y1 - 2 * y2 + 2 / ( e ^ x - 1 )";
         public string exp2 = "6 * y1 + 3 * y2 - 3 / ( e ^ x - 1 )";
         IDraw draw;
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
             IsMethod3 = false;
 
             method = new Method_1_Euler(new System.Collections.Generic.List<string>() { exp1, exp2 });
 
-             IsCalculatingElectrosystem(method);
+            IsCalculatingElectrosystem(method);
 
             Scenario(0);
-            draw = new DrawGraphics(method, panel1, IsMethod3);
+
+            Draw(50f);
+
             draw.Visual_Method();
 
             Name_File = "Method_Euler1" + Spot_plus_txt;
@@ -52,11 +86,12 @@ namespace Basalin__Lab
 
             method = new Method_2_RungeKutta(new System.Collections.Generic.List<string>() { exp1, exp2 });
 
-             IsCalculatingElectrosystem(method);
+            IsCalculatingElectrosystem(method);
 
             Scenario(1);
 
-            draw = new DrawGraphics(method, panel1, IsMethod3);
+            Draw(50f);
+
             draw.Visual_Method();
 
             Name_File = "Method_RungeKutta" + Spot_plus_txt;
@@ -69,32 +104,118 @@ namespace Basalin__Lab
             double z = 0.1;
             method = new Method_3_EndDiff(new System.Collections.Generic.List<string>() { exp1, exp2 }, z);
 
-             IsCalculatingElectrosystem(method);
-
+            IsCalculatingElectrosystem(method);
             Scenario(2);
 
-            draw = new DrawGraphics(method, panel1, IsMethod3);
+            Draw(7.2f);
+
             draw.Visual_Method();
 
             Name_File = "Method_EndDiff" + Spot_plus_txt;
         }
 
+
+        private void Draw(float Scale)
+        {
+            List<TextBox> txtes = this.Controls.OfType<TextBox>().ToList();
+
+            if (dr == DialogResult.Yes)
+            {
+                List<double> list_params = method.GetParameters_CR1R2LJ();
+
+                txtes[1].Text = "Параметры электрической системы:";
+                txtes[1].Width = (txtes[1].Text.Length - 2) * 10;
+
+                txtes[2].Text = $"C = {list_params[0]} | L = {list_params[3]} | J = {list_params[4]}";
+                txtes[2].Width = (txtes[2].Text.Length - 2) * 8;
+
+                txtes[3].Text = $"R1 = {list_params[1]} | R2 = {list_params[2]}";
+                txtes[3].Width = (txtes[3].Text.Length - 2) * 9;
+                draw = new DrawNewSystemGraphics(method, panel1);
+            }
+            else
+            {
+                txtes[1].Text = "Текущая система уравнений:";
+                txtes[1].Width = (txtes[1].Text.Length - 2) * 10;
+
+                txtes[2].Text = "y1' = " + exp1 + "  ";
+                txtes[2].Width = (txtes[2].Text.Length - 2) * 6;
+
+                txtes[3].Text = "y2' = " + exp2 + "  ";
+                txtes[3].Width = (txtes[3].Text.Length - 2) * 6;
+
+                draw = new DrawGraphics_H_and_Errors(method, panel1, IsMethod3);
+            }
+        }
         private void button4_Click(object sender, EventArgs e)
         {
-            //видимо нам расскажут во вторник 24.12.2024
-            COMING_SOON();
+            WARNING();
+
+            if (dr == DialogResult.Yes)
+            {
+                new Calculations_Saving(method).Save();
+            }
+            else
+            {
+                new Class_Saves(Name_File, method.Get_H(), method.Get_N(), method.Get_Err(), IsMethod3).Save();
+            }
+        }
+
+        DialogResult dr;
+        public void IsCalculatingElectrosystem(IMethod m)
+        {
+            dr = MessageBox.Show
+                ("Расчёт электрической системы?" +
+                "\n\nДа - электрическая система" +
+                "\n\nНет - старая тестовая система", "Выбор режима", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes) m.ToSetChoice(2);
         }
 
         bool IsMethod3;
         private void button5_Click(object sender, EventArgs e)
         {
-            new Class_Saves(Name_File, method.Get_H(), method.Get_N(), method.Get_Err(), IsMethod3).Save();
-            WARNING();
-        }
+            string directoryPath = "C:.\\..\\..\\..\\"; // Путь к папке, где находятся файлы
+            try
+            {
+                // Получаем список всех файлов с расширением ".txt" в указанной директории
+                string[] txtFiles = Directory.GetFiles(directoryPath, "*.txt");
 
-        public void IsCalculatingElectrosystem(IMethod m) {
-            DialogResult dr = MessageBox.Show("Расчёт электрической системы?", "Выбор режима", MessageBoxButtons.YesNo);
-            if (dr == DialogResult.Yes) m.ToSetChoice(2);
+                if (txtFiles.Length == 0)
+                {
+                    MessageBox.Show("В проекте нет сохранённых результатов.");
+                    return;
+                }
+
+                // Запрашиваем подтверждение на удаление всех файлов
+                DialogResult result = MessageBox.Show(
+                    $"Хотите удалить все файлы\nрезультатов в директории?",
+                    "Подтверждение удаления",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+
+                if (result == DialogResult.Yes)
+                {
+                    foreach (string filePath in txtFiles)
+                    {
+                        string PathNameFile = Path.GetFileName(filePath);
+                        try
+                        {
+
+                            File.Delete(filePath);
+                            MessageBox.Show($"Файл '{PathNameFile}' удален.");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Ошибка при удалении файла '{PathNameFile}':\n{ex.Message}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Произошла ошибка при попытке найти файлы результатов в проекте");
+            }
         }
 
         public void Setting_Form()
@@ -116,75 +237,53 @@ namespace Basalin__Lab
 
         public void Setting_Panel()
         {
+            panel1.Location = new Point(10, 10);
             panel1.Width = this.Width * 7 / 10;
             panel1.Height = this.Height - (panel1.Location.Y * 6);
             panel1.BackColor = Color.White;
         }
 
-        TextBox textBox = new TextBox();
-        TextBox textBox0 = new TextBox();
-        TextBox textBox1 = new TextBox();
-        TextBox textBox2 = new TextBox();
-
         readonly string[] Names_operations =
-            {
+        {
             "Метод Эйлера",
             "Метод Рунге-Кутты",
             "Метод Гаусса",
-            "Метод Ньютона",
-            "Сохранить использованный \nметод в txt"
-            };
-
-        List<Button> buttons = new List<Button>();
+            "Сохранить использованный \nметод в txt",
+            "Удалить все сохранённые txt\nс вычислениями"
+        };
 
         public void Setting_TextBox()
         {
-            textBox.Visible = true;
-            textBox.Enabled = false;
-            textBox.BackColor = Color.White;
-            textBox.Font = new Font("TimeNewRoman", 12);
-            textBox.Text = "Методы решений для задачи Коши";
-            textBox.Width = (textBox.Text.Length - 2) * 10;
-            textBox.Location = new Point(panel1.Width + 50, panel1.Location.Y);
-            
-            textBox0.Visible = true;
-            textBox0.Enabled = false;
-            textBox0.BackColor = Color.White;
-            textBox0.Font = new Font("TimeNewRoman", 12);
-            textBox0.Text = "Текущая система уравнений:";
-            textBox0.Width = (textBox.Text.Length - 2) * 8;
-            textBox0.Location = new Point(panel1.Width + 50, textBox.Location.Y + 50);
-            
-            textBox1.Visible = true;
-            textBox1.Enabled = false;
-            textBox1.BackColor = Color.White;
-            textBox1.Font = new Font("TimeNewRoman", 12);
-            textBox1.Text = "y1' = " + exp1 + "  ";
-            textBox1.Width = (textBox1.Text.Length - 2) * 6;
-            textBox1.Location = new Point(panel1.Width + 50, textBox0.Location.Y + 50);
-            
-            textBox2.Visible = true;
-            textBox2.Enabled = false;
-            textBox2.BackColor = Color.White;
-            textBox2.Font = new Font("TimeNewRoman", 12);
-            textBox2.Text = "y2' = " + exp2 + "  ";
-            textBox2.Width = (textBox2.Text.Length - 2) * 6;
-            textBox2.Location = new Point(panel1.Width + 50, textBox1.Location.Y + 50);
-            
-            Controls.Add(textBox);
-            Controls.Add(textBox0);
-            Controls.Add(textBox1);
-            Controls.Add(textBox2);
+            CreateAndAddTextBox("Методы решений для задачи Коши", 0, 10, 1);
+            CreateAndAddTextBox("Текущая система уравнений:", 50, 10, 2);
+            CreateAndAddTextBox("y1' = " + exp1 + "  ", 100, 6, 3);
+            CreateAndAddTextBox("y2' = " + exp2 + "  ", 150, 6, 4);
+
+            this.ResumeLayout(false);
         }
 
+        private void CreateAndAddTextBox(string text, int yOffset, int koef_width, int index)
+        {
+            TextBox textBox = new TextBox
+            {
+                Name = index.ToString(),
+                Visible = true,
+                Enabled = false,
+                BackColor = Color.White,
+                Font = new Font("TimeNewRoman", 12),
+                Text = text,
+                Width = (text.Length - 2) * koef_width,
+                Location = new Point(panel1.Width + 50, panel1.Location.Y + yOffset)
+            };
+
+            Controls.Add(textBox);
+        }
+
+        List<Button> buttons = new List<Button>();
         public void Setting_Buttons()
         {
 
-            buttons.Add(button1);
-            buttons.Add(button2);
-            buttons.Add(button3);
-            buttons.Add(button4);
-            buttons.Add(button5);
+            buttons = this.Controls.OfType<Button>().Reverse().ToList();
 
             int coefficient = 50;
 
@@ -194,10 +293,16 @@ namespace Basalin__Lab
                 buttons[i].Font = new Font("TimeNewRoman", 12);
                 buttons[i].Text = Names_operations[i];
                 buttons[i].AutoSize = true;
-                int X0 = textBox.Location.X; 
+                //int X0 = textBox.Location.X;
+                int X0 = panel1.Width + 50;
                 if (i == 0)
                 {
-                    buttons[i].Location = new Point(X0, textBox2.Location.Y + coefficient);
+                    TextBox LastTextbox = this.Controls.Find(4.ToString(), true).FirstOrDefault() as TextBox;
+                    buttons[i].Location = new Point(X0, LastTextbox.Location.Y + coefficient);
+                }
+                else if (i == buttons.Count - 1)
+                {
+                    buttons[i].Location = new Point(X0, buttons[i - 1].Location.Y + coefficient + 20);
                 }
                 else
                 {
@@ -230,7 +335,15 @@ namespace Basalin__Lab
                 button.Enabled = false;
             }
             method.ToCalculate();
-            Name_File = Names_operations[Numb_Oper];
+
+            if (dr == DialogResult.Yes)
+            {
+                Name_File = method.Name;
+            }
+            else
+            {
+                Name_File = Names_operations[Numb_Oper];
+            }
             SUCCESS();
             foreach (var button in buttons)
             {
@@ -246,38 +359,55 @@ namespace Basalin__Lab
                 buttons.Add(button5);
             }
             buttons.Add(button5);
-            MessageBox.Show
-                ($"Подсчитан {Name_File}",
-                "Успех!",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-                );
+            if (dr == DialogResult.Yes)
+            {
+                MessageBox.Show
+                 ($"Подсчитан {method.Name}",
+                 "Успех!",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Information
+                 );
+            }
+            else
+            {
+                MessageBox.Show
+                 ($"Подсчитан {Name_File}",
+                 "Успех!",
+                 MessageBoxButtons.OK,
+                 MessageBoxIcon.Information
+                 );
+            }
         }
 
         public void WARNING()
         {
-            MessageBox.Show
-                ($"Результаты вычислений будут сохранены\nв текстовом файле {Name_File}",
-                "Предупреждение!",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-                );
-        }
 
-        public void COMING_SOON()
-        {
-            MessageBox.Show
+            if (dr == DialogResult.Yes)
+            {
+                MessageBox.Show
                 (
-                "Coming soon",
-                "Ингформация",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
+                    $"Результаты вычислений будут сохранены\nв текстовом файле {method.Name}.txt",
+                    "Информация!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
                 );
+            }
+            else
+            {
+                MessageBox.Show
+                (
+                    $"Результаты вычислений будут сохранены\nв текстовом файле {Name_File}",
+                    "Информация!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            }
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            
+            //Если panel не добавить в форму (и дважды щёлкнуть по ней)
+            //то не запустится отрисовка на панели
         }
     }
 }
