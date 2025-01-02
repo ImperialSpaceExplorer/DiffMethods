@@ -240,5 +240,9 @@ namespace Basalin__Lab
         {
             return Y_expression(Xi);
         }
+
+         public List<double> GetParameters_CR1R2LJ() {
+            return new List<double>() {C,R1,R2,L,J };
+        }
     }    
 }
